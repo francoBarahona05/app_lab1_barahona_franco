@@ -96,13 +96,13 @@ def dreeam_team_app() -> None:
             case 7:
                 jugador_con_mas_porcentaje_tir_campo = mostrar_jugadores_maximos("porcentaje_tiros_de_campo","maximo")
                 mostrar_Datos(jugador_con_mas_porcentaje_tir_campo)
-                if terminar_menu:
+                if terminar_menu():
                     break
             case 8:
                 jugador_con_mas_asistencias_totales = mostrar_jugadores_maximos("asistencias_totales","maximo")
                 mostrar_Datos(jugador_con_mas_asistencias_totales)
                 
-                if terminar_menu:
+                if terminar_menu():
                     break            
             case 9:
                 mejores = mejores_que_el_promedio("promedio_puntos_por_partido")
@@ -110,9 +110,15 @@ def dreeam_team_app() -> None:
                 if terminar_menu():
                     break
             case 10:
-                pass
+                mejores = mejores_que_el_promedio("promedio_rebotes_por_partido")
+                mostrar_Datos(mejores)
+                if terminar_menu():
+                    break
             case 11:
-                pass
+                mejores = mejores_que_el_promedio("promedio_asistencias_por_partido")
+                mostrar_Datos(mejores)
+                if terminar_menu():
+                    break   
             case 12:
                 pass
             case 13:
