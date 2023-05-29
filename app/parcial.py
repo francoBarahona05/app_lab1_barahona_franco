@@ -28,10 +28,6 @@ def leer_archivo_json()->list:
     return dato["jugadores"]
 dream_team = leer_archivo_json()
 
-# 1) Mostrar la lista de todos los jugadores del Dream Team. Con el formato:
-# Nombre Jugador - Posición. Ejemplo:
-# Michael Jordan - Escolta
-
 def mostrar_jugadores()->list:
     """retorna una lista de diccionarios con nombre e informacion de los jugadores del equipo"""
     jugadores = []
@@ -80,3 +76,43 @@ def guardar_estadisticas_csv(dato:list):
             archivo.write("{0}\n".format(i))
     print("archivo creado!")
         
+   
+        
+#-----3)
+def mostrar_logros():
+    """muestra por consola los logros de un jugador elegido por el usuario"""
+    while True:
+        nombre = input("ingrese el nombre del jugador que desea buscar: ")
+        if re.match("^([a-zA-Z]+)$",nombre):   
+            posibles_jugadores = []
+            for jugador in dream_team:
+                if re.search(f"{nombre}", jugador["nombre"],re.IGNORECASE):
+                    dato = {}
+                    dato["nombre"] = jugador["nombre"]
+                    dato["estadisticas"] = ", ".join(jugador["logros"])
+                    posibles_jugadores.append(dato)
+            return posibles_jugadores
+        else:
+            print("solo se acepta texto...")
+    
+    
+
+#----4)
+# Calcular y mostrar el promedio de puntos por partido del equipo excluyendo al jugador con la menor cantidad de puntos por partido.
+def calcular_promedio_total(opcion:bool,dato:str):
+    """ si opcion es true , devuelve el promedio del dato que necesito por parametro sacando al peor en esa estadistica
+    de lo contrario retornara el promedio total"""
+    copia = copy.deepcopy(dream_team)
+    acumulador = 0
+    contador = 0
+    if opcion == True:
+        jugador_a_borrar = mostrar_jugadores_maximos(dato,"minimo")
+        for jugador in copia:
+            if jugador_a_borrar["nombre"] in jugador["nombre"]:
+                copia.remove(jugador)
+                break
+    for jugador in copia:
+        acumulador += jugador["estadisticas"][dato]
+        contador += 1
+    promedio = acumulador / contador
+    return promedio

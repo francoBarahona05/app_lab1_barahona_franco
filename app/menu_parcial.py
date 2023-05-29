@@ -69,10 +69,21 @@ def dreeam_team_app() -> None:
                 if terminar_menu():
                     break
             case 3:
-                pass
+                logros = mostrar_logros()
+                mostrar_Datos(logros)
+                if terminar_menu():
+                    break
             case 4:
-                pass
+                # Calcular y mostrar el promedio de puntos por partido de todo el equipo del Dream Team, ordenado por nombre de manera ascendente. 
+                promedio = calcular_promedio_total(False,"promedio_puntos_por_partido")
+                datos = obtener_estadistica_puntual("promedio_puntos_por_partido")
+                datos_ordenados = ordenar_objeto(datos,"nombre","acendente")
+                mostrar_Datos(datos_ordenados)
+                print(f"el promedio total de todos los jugadores es: {promedio}")
+                if terminar_menu():
+                    break
             case 5:
+                # Permitir al usuario ingresar el nombre de un jugador y mostrar si ese jugador es miembro del Salón de la Fama del Baloncesto.
                 pass
             case 6:
                 pass
