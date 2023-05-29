@@ -105,7 +105,10 @@ def dreeam_team_app() -> None:
                 if terminar_menu:
                     break            
             case 9:
-                pass
+                mejores = mejores_que_el_promedio("promedio_puntos_por_partido")
+                mostrar_Datos(mejores)
+                if terminar_menu():
+                    break
             case 10:
                 pass
             case 11:

@@ -222,3 +222,23 @@ def mostrar_jugadores_maximos(clave:str,orden:str)->dict:
                 referencia = jugador
                 maximo = prospecto
     return maximo
+
+
+
+# Permitir al usuario ingresar un valor y mostrar los jugadores que han promediado más puntos por partido que ese valor.
+def mejores_que_el_promedio(clave:str)->list:
+    """compara el dato ingresado y devuelve una lista con todos los que superen tal dato (punto 10/11/12)"""
+    while True:  
+        ingreso = input("ingrese un promedio para compara con los demas jugadores: ")
+        jugadores_a_mostrar = []
+        if re.match(r'^[-+]?\d*\.?\d+$', ingreso):
+            for jugador in dream_team:
+                if float(ingreso) < jugador["estadisticas"][clave]:
+                    objeto = {
+                        "nombre" : jugador["nombre"],
+                        f"{clave}".replace("_"," ") : jugador["estadisticas"][clave]
+                    }
+                    jugadores_a_mostrar.append(objeto)
+                else:
+                    return print("el numero ingresado es muy alto")
+            return jugadores_a_mostrar
