@@ -57,7 +57,17 @@ def dreeam_team_app() -> None:
                 if terminar_menu():
                     break
             case 2:
-                pass
+                jugador = selecionar_jug_por_indice()
+                mostrar_Datos(jugador)
+                while True:
+                    pregunta = input("usted desea pasar esta informacion a un archivo CSV?: ")
+                    if re.match("^si$",pregunta,re.IGNORECASE):
+                        guardar_estadisticas_csv(jugador)
+                        break
+                    elif re.match("^no$",pregunta,re.IGNORECASE):
+                        break
+                if terminar_menu():
+                    break
             case 3:
                 pass
             case 4:
