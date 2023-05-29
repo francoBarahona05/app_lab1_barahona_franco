@@ -165,7 +165,11 @@ def dreeam_team_app() -> None:
                     break
 
             case 19:
-                pass
+                # Permitir al usuario ingresar un valor y mostrar los jugadores , ordenados por posición en la cancha, que hayan tenido un porcentaje de tiros de campo superior a ese valor.
+                jugadores_ordenados = mostrar_jugadores_por_posicion()
+                mostrar_Datos(jugadores_ordenados)
+                if terminar_menu():
+                    break
             case 20:
                 pass
             case 0 :
