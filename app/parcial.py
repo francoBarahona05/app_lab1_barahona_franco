@@ -202,7 +202,7 @@ def validar_jugador()->list:
 # 7) 8) 9)  Calcular y mostrar el jugador con la mayor cantidad de rebotes totales.
 
 def mostrar_jugadores_maximos(clave:str,orden:str)->dict:
-    """devuelve el mejor jugador con la clave que busquemos del dream team , devuelve maximos y minimos (puntos 7/8/9/15)"""
+    """devuelve el mejor jugador con la clave que busquemos del dream team , devuelve maximos y minimos (puntos 7/8/9/15/18)"""
     referencia = dream_team[11]
     maximo = None
     for jugador in dream_team:
@@ -227,7 +227,7 @@ def mostrar_jugadores_maximos(clave:str,orden:str)->dict:
 
 # Permitir al usuario ingresar un valor y mostrar los jugadores que han promediado más puntos por partido que ese valor.
 def mejores_que_el_promedio(clave:str)->list:
-    """compara el dato ingresado y devuelve una lista con todos los que superen tal dato (punto 10/11/12)"""
+    """compara el dato ingresado y devuelve una lista con todos los que superen tal dato (punto 10/11/12/15/18)"""
     while True:  
         ingreso = input("ingrese un promedio para compara con los demas jugadores: ")
         jugadores_a_mostrar = []

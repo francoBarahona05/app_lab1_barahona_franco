@@ -149,9 +149,14 @@ def dreeam_team_app() -> None:
                 jug_mas_logros = jugador_con_mas_logros()
                 mostrar_Datos(jug_mas_logros)
                 if terminar_menu():
-                    break
+                    break                
+
             case 17:
                 # Permitir al usuario ingresar un valor y mostrar los jugadores que hayan tenido un porcentaje de tiros triples superior a ese valor.
+                mejores = mejores_que_el_promedio("porcentaje_tiros_triples")
+                mostrar_Datos(mejores)
+                if terminar_menu():
+                
             case 18:
                 # Calcular y mostrar el jugador con la mayor cantidad de temporadas jugadas
             case 19:
