@@ -34,7 +34,7 @@ def dreeam_team_app() -> None:
         18 - Imprimir jugador con la mayor cantidad de temporadas jugadas.
         19 - Imprimir jugadores ordenados por posición con un porcentaje de tiros de campo superior a un valor dado.
         20 - Guardar las estadísticas de un jugador seleccionado en un archivo CSV.
-        23 - BONUS!
+        23 - imprimir el ranking personal de cada jugador en Puntos Rebotes Asistencias Robos
         0 - Salir.
 
         _______________________________________________________________
