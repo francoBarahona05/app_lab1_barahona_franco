@@ -171,7 +171,11 @@ def dreeam_team_app() -> None:
                 if terminar_menu():
                     break
             case 20:
-                pass
+                jugadores23 = BONUS()
+                mostrar_Datos(jugadores23)
+                csv_23(jugadores23)
+                if terminar_menu():
+                    break
             case 0 :
                 break
             case _:

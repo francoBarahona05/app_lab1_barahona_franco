@@ -140,7 +140,7 @@ def ordenar_objeto(objeto:list[dict],clave:str,orden:str)->list[dict]:
 #----4)
 
 def mostrar_jugadores_maximos(clave:str,orden:str)->dict:
-    """devuelve el mejor jugador con la clave que busquemos del dream team , devuelve maximos y minimos (puntos 4/7/8/9/15)"""
+    """devuelve el mejor jugador con la clave que busquemos del dream team , devuelve maximos y minimos (puntos 4/7/8/9/15/18)"""
     referencia = dream_team[0]
     lista = []
     for jugador in dream_team[1:]:
@@ -251,3 +251,80 @@ def jugador_con_mas_logros()->dict:
         if len(jugador["logros"]) > len(maximo["logros"]):
             maximo = jugador
     return maximo
+
+#20
+def mostrar_jugadores_por_posicion():
+    mejores = mejores_que_el_promedio("porcentaje_tiros_de_campo","maximo")
+    for jugador in mejores:
+        for jug_ in dream_team:
+            if jugador["nombre"] == jug_["nombre"]:
+                jugador["posicion"] = jug_["posicion"]
+    mejores_ordenados = ordenar_objeto(mejores,"posicion")
+    return mejores_ordenados
+
+
+
+def BONUS():
+    
+    puntos_sin_ordenar = obtener_estadistica_puntual("puntos_totales")
+    puntos_ordenados = ordenar_objeto(puntos_sin_ordenar,"puntos_totales","decendente")
+    for indice,jugador in enumerate(puntos_ordenados):
+        jugador["ranking puntos"] = f"{indice + 1 }"  
+    
+    asistencias_sin_ordenar = obtener_estadistica_puntual("asistencias_totales")
+    asistencias_ordenados = ordenar_objeto(asistencias_sin_ordenar,"asistencias_totales","decendente")
+    for indice,jugador in enumerate(asistencias_ordenados):
+        jugador["ranking asistencias"] = f"{indice + 1 }" 
+        
+    rebotes_sin_ordenar = obtener_estadistica_puntual("rebotes_totales")
+    rebotes_ordenados = ordenar_objeto(rebotes_sin_ordenar,"rebotes_totales","decendente")
+    for indice,jugador in enumerate(rebotes_ordenados):
+        jugador["ranking rebotes"] = f"{indice + 1 }" 
+        
+    robos_sin_ordenar = obtener_estadistica_puntual("robos_totales")
+    robos_ordenados = ordenar_objeto(robos_sin_ordenar,"robos_totales","decendente")
+    for indice,jugador in enumerate(robos_ordenados):
+        jugador["ranking robos"] =  f"{indice + 1 }"   
+
+    jugadores = {}
+
+    for jug in puntos_ordenados:
+        
+        jugadores[jug["nombre"]] = { "rank puntos": jug["ranking puntos"]}
+
+    for jug in asistencias_ordenados:
+   
+        if  jug["nombre"] in jugadores:
+            jugadores[ jug["nombre"]]["rank asistencias"] = jug["ranking asistencias"]
+
+    for jug in rebotes_ordenados:
+ 
+        if  jug["nombre"] in jugadores:
+            jugadores[jug["nombre"]]["rank rebotes"] = jug["ranking rebotes"]
+
+    for jug in robos_ordenados:
+ 
+        if jug["nombre"] in jugadores:
+            jugadores[jug["nombre"]]["rank robos"] = jug["ranking robos"]
+
+    return jugadores
+
+    
+
+def csv_23(jugadores_punto_23):
+    nombres = jugadores_punto_23.keys()
+    # Obtener todos los nombres de los rankings
+    rankings = ["nombre", 'rank puntos', 'rank asistencias', 'rank rebotes', 'rank robos']
+    # Abrir el archivo CSV en modo de escritura
+    with open("app/tabla_rankings.csv", 'w', newline='') as csv_file:
+        writer = csv.writer(csv_file, delimiter=".")
+
+        encabezado = [f"    {ranking}   " for ranking in rankings]
+        writer.writerow(encabezado)
+
+        # Escribir las filas con los datos de los jugadores
+        for nombre in nombres:
+            fila = [f"{nombre.ljust(19)}"]
+            for ranking in rankings[1:]:
+                fila.append(f"{jugadores_punto_23[nombre][ranking]:>20}")
+            writer.writerow(fila)
