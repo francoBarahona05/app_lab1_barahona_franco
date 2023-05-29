@@ -93,11 +93,75 @@ def mostrar_logros():
                     posibles_jugadores.append(dato)
             return posibles_jugadores
         else:
-            print("solo se acepta texto...")
+            print("solo se acepta texto....")
     
-    
+#--------------------------------------------------------------------    
+def obtener_estadistica_puntual(orden:str)->list:
+    """con esta funcion obtengo el nombre y un dato especifico de las estadisticas que me van a servir en otros puntos
+    del parcial para ser mas directo a la hora de mostrar el resultado y poder usar mas funciones devuelve una lista con diccionarios donde tengo nombre y estadistica puntual de los jugadores"""
+    datos = []
+    for jugadores in dream_team:
+        dato = {
+            "nombre" : jugadores["nombre"],
+            orden : jugadores["estadisticas"]["{0}".format(orden)]
+            }
+        datos.append(dato)
+    return datos
 
+
+def ordenar_objeto(objeto:list[dict],clave:str,orden:str)->list[dict]:
+    """" devuelve una lista ordenada de un diccionario con el formato de  "obtener_estadistica_puntual
+    con estas 2 funciones muestro una lista ordenada de cualquier estadistica de cualquier jugador del dream team
+    de forma acendente o decendente , recibiendo un objeto con una lista , una clave que quiero comparar y un tercer parametro donde aclaro si es de forma acendente o decendente"""
+    
+    if len(objeto) <= 1:
+        return objeto
+    else:
+        pivote = objeto[0][clave]
+        lista_uno = []
+        lista_dos = []
+        for jugador in objeto[1:]:
+            if re.match("^acendente$",orden,re.IGNORECASE):
+                if pivote >= jugador[clave]:
+                    lista_uno.append(jugador)
+                elif pivote <= jugador[clave]:
+                    lista_dos.append(jugador)
+            else:
+                if pivote <= jugador[clave]:
+                    lista_uno.append(jugador)
+                elif pivote >= jugador[clave]:
+                    lista_dos.append(jugador)
+    lista_uno = ordenar_objeto(lista_uno,clave,orden)
+    lista_uno.append(objeto[0])
+    lista_dos = ordenar_objeto(lista_dos,clave,orden)
+    lista_uno.extend(lista_dos)
+    return lista_uno
+#---------------------------------------------------------------------------------------------
 #----4)
+
+def mostrar_jugadores_maximos(clave:str,orden:str)->dict:
+    """devuelve el mejor jugador con la clave que busquemos del dream team , devuelve maximos y minimos (puntos 4/7/8/9/15)"""
+    referencia = dream_team[0]
+    lista = []
+    for jugador in dream_team[1:]:
+        if re.match("^maximo$",orden,re.IGNORECASE):
+            if referencia["estadisticas"][clave] <= jugador["estadisticas"][clave]:
+                prospecto = {"nombre": jugador["nombre"],
+                    f"{clave}" : jugador["estadisticas"][clave]
+                }
+                referencia = jugador
+                lista.append(prospecto)
+
+        elif re.match("^minimo$",orden,re.IGNORECASE):
+            if referencia["estadisticas"][clave] >= jugador["estadisticas"][clave]:
+                prospecto = {"nombre": jugador["nombre"],
+                    f"{clave}" : jugador["estadisticas"][clave]
+                }
+                referencia = jugador
+                lista.append(prospecto)
+    return lista
+
+
 # Calcular y mostrar el promedio de puntos por partido del equipo excluyendo al jugador con la menor cantidad de puntos por partido.
 def calcular_promedio_total(opcion:bool,dato:str):
     """ si opcion es true , devuelve el promedio del dato que necesito por parametro sacando al peor en esa estadistica
