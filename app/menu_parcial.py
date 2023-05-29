@@ -120,11 +120,24 @@ def dreeam_team_app() -> None:
                 if terminar_menu():
                     break   
             case 12:
-                pass
+                # Calcular y mostrar el jugador con la mayor cantidad de robos totales.
+                jugador_con_mas_porcentaje_tir_campo = mostrar_jugadores_maximos("robos_totales","maximo")
+                mostrar_Datos(jugador_con_mas_porcentaje_tir_campo)
+                if terminar_menu():
+                    break
+
             case 13:
-                pass
+                # Calcular y mostrar el jugador con la mayor cantidad de bloqueos totales.
+                jugador_con_mas_porcentaje_tir_campo = mostrar_jugadores_maximos("bloqueos_totales","maximo")
+                mostrar_Datos(jugador_con_mas_porcentaje_tir_campo)
+                if terminar_menu():
+                    break
             case 14:
-                pass
+                # Permitir al usuario ingresar un valor y mostrar los jugadores que hayan tenido un porcentaje de tiros libres superior a ese valor.
+                mejores = mejores_que_el_promedio("porcentaje_tiros_libres")
+                mostrar_Datos(mejores)
+                if terminar_menu():
+                    break   
             case 15:
                 pass
             case 16:
