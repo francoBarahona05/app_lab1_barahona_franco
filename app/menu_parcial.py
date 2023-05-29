@@ -101,6 +101,7 @@ def dreeam_team_app() -> None:
             case 8:
                 jugador_con_mas_asistencias_totales = mostrar_jugadores_maximos("asistencias_totales","maximo")
                 mostrar_Datos(jugador_con_mas_asistencias_totales)
+                
                 if terminar_menu:
                     break            
             case 9:
