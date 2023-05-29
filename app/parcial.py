@@ -242,5 +242,12 @@ def mejores_que_el_promedio(clave:str)->list:
                 else:
                     return print("el numero ingresado es muy alto")
             return jugadores_a_mostrar
-
-
+        
+        
+def jugador_con_mas_logros()->dict:
+    """retorna un diccionario con el jugador con mas logros obtenidos del dream team"""
+    maximo = dream_team[0]
+    for jugador in dream_team[1:]:
+        if len(jugador["logros"]) > len(maximo["logros"]):
+            maximo = jugador
+    return maximo
