@@ -84,7 +84,9 @@ def dreeam_team_app() -> None:
                     break
             case 5:
                 # Permitir al usuario ingresar el nombre de un jugador y mostrar si ese jugador es miembro del Salón de la Fama del Baloncesto.
-                pass
+                validar_jugador()
+                if terminar_menu():
+                    break
             case 6:
                 pass
             case 7:

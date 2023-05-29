@@ -180,3 +180,20 @@ def calcular_promedio_total(opcion:bool,dato:str):
         contador += 1
     promedio = acumulador / contador
     return promedio
+
+
+
+# Permitir al usuario ingresar el nombre de un jugador y mostrar si ese jugador es miembro del Salón de la Fama del Baloncesto.
+def validar_jugador()->list:
+    """valida si un jugador es miembro del salon de la fama"""
+    while True:
+        ingreso = input("ingrese el nombre exacto del jugador: ")
+        for jugador in dream_team:
+            if re.match("^{0}$".format(ingreso), jugador["nombre"],re.IGNORECASE):
+                if "Miembro del Salon de la Fama del Baloncesto" in jugador["logros"]:
+                    return print("es miembro del salon de la fama")
+                    
+                else:
+                    return print("no es miembro del salon de la fama")
+                
+        print("el nombre ingresado esta mal escrito o no forma parte del dream team")
