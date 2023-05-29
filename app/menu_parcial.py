@@ -139,13 +139,21 @@ def dreeam_team_app() -> None:
                 if terminar_menu():
                     break   
             case 15:
-                pass
+                # Calcular y mostrar el promedio de puntos por partido del equipo excluyendo al jugador con la menor cantidad de puntos por partido.
+                promedio_sin_el_peor_jug = calcular_promedio_total(True,"promedio_puntos_por_partido")
+                mostrar_Datos(promedio_sin_el_peor_jug)
+                if terminar_menu():
+                    break
             case 16:
-                pass
+                # Calcular y mostrar el jugador con la mayor cantidad de logros obtenidos
+                jug_mas_logros = jugador_con_mas_logros()
+                mostrar_Datos(jug_mas_logros)
+                if terminar_menu():
+                    break
             case 17:
-                pass
+                # Permitir al usuario ingresar un valor y mostrar los jugadores que hayan tenido un porcentaje de tiros triples superior a ese valor.
             case 18:
-                pass
+                # Calcular y mostrar el jugador con la mayor cantidad de temporadas jugadas
             case 19:
                 pass
             case 20:

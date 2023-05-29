@@ -242,3 +242,5 @@ def mejores_que_el_promedio(clave:str)->list:
                 else:
                     return print("el numero ingresado es muy alto")
             return jugadores_a_mostrar
+
+
