@@ -156,9 +156,14 @@ def dreeam_team_app() -> None:
                 mejores = mejores_que_el_promedio("porcentaje_tiros_triples")
                 mostrar_Datos(mejores)
                 if terminar_menu():
-                
+                    break
             case 18:
                 # Calcular y mostrar el jugador con la mayor cantidad de temporadas jugadas
+                jugador_con_mas_temporadas = mostrar_jugadores_maximos("temporadas","maximo")
+                mostrar_Datos(jugador_con_mas_temporadas)
+                if terminar_menu():
+                    break
+
             case 19:
                 pass
             case 20:

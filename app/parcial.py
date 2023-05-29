@@ -202,7 +202,7 @@ def validar_jugador()->list:
 # 7) 8) 9)  Calcular y mostrar el jugador con la mayor cantidad de rebotes totales.
 
 def mostrar_jugadores_maximos(clave:str,orden:str)->dict:
-    """devuelve el mejor jugador con la clave que busquemos del dream team , devuelve maximos y minimos (puntos 7/8/9/15/18)"""
+    """devuelve el mejor jugador con la clave que busquemos del dream team , devuelve maximos y minimos (puntos 7/8/9/19)"""
     referencia = dream_team[11]
     maximo = None
     for jugador in dream_team:
