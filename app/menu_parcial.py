@@ -88,11 +88,21 @@ def dreeam_team_app() -> None:
                 if terminar_menu():
                     break
             case 6:
-                pass
+                # Calcular y mostrar el jugador con la mayor cantidad de rebotes totales.
+                jugador_con_mas_rebotes = mostrar_jugadores_maximos("rebotes_totales","maximo")
+                mostrar_Datos(jugador_con_mas_rebotes)
+                if terminar_menu:
+                    break
             case 7:
-                pass
+                jugador_con_mas_porcentaje_tir_campo = mostrar_jugadores_maximos("porcentaje_tiros_de_campo","maximo")
+                mostrar_Datos(jugador_con_mas_porcentaje_tir_campo)
+                if terminar_menu:
+                    break
             case 8:
-                pass
+                jugador_con_mas_asistencias_totales = mostrar_jugadores_maximos("asistencias_totales","maximo")
+                mostrar_Datos(jugador_con_mas_asistencias_totales)
+                if terminar_menu:
+                    break            
             case 9:
                 pass
             case 10:

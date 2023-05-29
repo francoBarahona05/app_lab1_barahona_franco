@@ -197,3 +197,28 @@ def validar_jugador()->list:
                     return print("no es miembro del salon de la fama")
                 
         print("el nombre ingresado esta mal escrito o no forma parte del dream team")
+        
+        
+# 7) 8) 9)  Calcular y mostrar el jugador con la mayor cantidad de rebotes totales.
+
+def mostrar_jugadores_maximos(clave:str,orden:str)->dict:
+    """devuelve el mejor jugador con la clave que busquemos del dream team , devuelve maximos y minimos (puntos 7/8/9/15)"""
+    referencia = dream_team[11]
+    maximo = None
+    for jugador in dream_team:
+        if re.match("^maximo$",orden,re.IGNORECASE):
+            if referencia["estadisticas"][clave] < jugador["estadisticas"][clave]:
+                prospecto = {"nombre": jugador["nombre"],
+                    f"{clave}" : jugador["estadisticas"][clave]
+                }
+                referencia = jugador
+                maximo = prospecto
+
+        elif re.match("^minimo$",orden,re.IGNORECASE):
+            if referencia["estadisticas"][clave] > jugador["estadisticas"][clave]:
+                prospecto = {"nombre": jugador["nombre"],
+                    f"{clave}" : jugador["estadisticas"][clave]
+                }
+                referencia = jugador
+                maximo = prospecto
+    return maximo
