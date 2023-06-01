@@ -3,7 +3,6 @@ import csv
 import copy
 import json
 
-
 jugadores_por_indice_str =\
 """
 nombre: Michael Jordan  opcion: 1
@@ -29,7 +28,7 @@ def leer_archivo_json()->list:
 dream_team = leer_archivo_json()
 
 def mostrar_jugadores()->list:
-    """retorna una lista de diccionarios con nombre e informacion de los jugadores del equipo"""
+    """retorna una lista de diccionarios con nombre y la posicion de los jugadores del equipo"""
     jugadores = []
     for jugador in dream_team:
         dato = "nombre: {0}  posicion: {1}".format(jugador["nombre"],jugador["posicion"])
@@ -96,14 +95,14 @@ def mostrar_logros():
             print("solo se acepta texto....")
     
 #--------------------------------------------------------------------    
-def obtener_estadistica_puntual(orden:str)->list:
+def obtener_estadistica_puntual(clave:str)->list:
     """con esta funcion obtengo el nombre y un dato especifico de las estadisticas que me van a servir en otros puntos
     del parcial para ser mas directo a la hora de mostrar el resultado y poder usar mas funciones devuelve una lista con diccionarios donde tengo nombre y estadistica puntual de los jugadores"""
     datos = []
     for jugadores in dream_team:
         dato = {
             "nombre" : jugadores["nombre"],
-            orden : jugadores["estadisticas"]["{0}".format(orden)]
+            clave : jugadores["estadisticas"]["{0}".format(clave)]
             }
         datos.append(dato)
     return datos
@@ -139,50 +138,6 @@ def ordenar_objeto(objeto:list[dict],clave:str,orden:str)->list[dict]:
 #---------------------------------------------------------------------------------------------
 #----4)
 
-def mostrar_jugadores_maximos(clave:str,orden:str)->dict:
-    """devuelve el mejor jugador con la clave que busquemos del dream team , devuelve maximos y minimos (puntos 4/7/8/9/15/18)"""
-    referencia = dream_team[0]
-    lista = []
-    for jugador in dream_team[1:]:
-        if re.match("^maximo$",orden,re.IGNORECASE):
-            if referencia["estadisticas"][clave] <= jugador["estadisticas"][clave]:
-                prospecto = {"nombre": jugador["nombre"],
-                    f"{clave}" : jugador["estadisticas"][clave]
-                }
-                referencia = jugador
-                lista.append(prospecto)
-
-        elif re.match("^minimo$",orden,re.IGNORECASE):
-            if referencia["estadisticas"][clave] >= jugador["estadisticas"][clave]:
-                prospecto = {"nombre": jugador["nombre"],
-                    f"{clave}" : jugador["estadisticas"][clave]
-                }
-                referencia = jugador
-                lista.append(prospecto)
-    return lista
-
-
-# Calcular y mostrar el promedio de puntos por partido del equipo excluyendo al jugador con la menor cantidad de puntos por partido.
-def calcular_promedio_total(opcion:bool,dato:str):
-    """ si opcion es true , devuelve el promedio del dato que necesito por parametro sacando al peor en esa estadistica
-    de lo contrario retornara el promedio total"""
-    copia = copy.deepcopy(dream_team)
-    acumulador = 0
-    contador = 0
-    if opcion == True:
-        jugador_a_borrar = mostrar_jugadores_maximos(dato,"minimo")
-        for jugador in copia:
-            if jugador_a_borrar["nombre"] in jugador["nombre"]:
-                copia.remove(jugador)
-                break
-    for jugador in copia:
-        acumulador += jugador["estadisticas"][dato]
-        contador += 1
-    promedio = acumulador / contador
-    return promedio
-
-
-
 # Permitir al usuario ingresar el nombre de un jugador y mostrar si ese jugador es miembro del Salón de la Fama del Baloncesto.
 def validar_jugador()->list:
     """valida si un jugador es miembro del salon de la fama"""
@@ -201,28 +156,47 @@ def validar_jugador()->list:
         
 # 7) 8) 9)  Calcular y mostrar el jugador con la mayor cantidad de rebotes totales.
 
-def mostrar_jugadores_maximos(clave:str,orden:str)->dict:
-    """devuelve el mejor jugador con la clave que busquemos del dream team , devuelve maximos y minimos (puntos 7/8/9/19)"""
-    referencia = dream_team[11]
-    maximo = None
+def mostrar_jugadores_maximos(clave:str,tipo:str)->dict:                
+    """Devuelve el mejor jugador con la clave que busquemos del dream team, devuelve máximo (puntos 7/8/9/19)"""
+    
+    maximo = {
+        "nombre": dream_team[0]["nombre"],
+        clave.replace("_", " "): dream_team[0]["estadisticas"].get(clave, 0)
+    }
+    
     for jugador in dream_team:
-        if re.match("^maximo$",orden,re.IGNORECASE):
-            if referencia["estadisticas"][clave] < jugador["estadisticas"][clave]:
-                prospecto = {"nombre": jugador["nombre"],
-                    f"{clave}" : jugador["estadisticas"][clave]
-                }
-                referencia = jugador
-                maximo = prospecto
-
-        elif re.match("^minimo$",orden,re.IGNORECASE):
-            if referencia["estadisticas"][clave] > jugador["estadisticas"][clave]:
-                prospecto = {"nombre": jugador["nombre"],
-                    f"{clave}" : jugador["estadisticas"][clave]
-                }
-                referencia = jugador
-                maximo = prospecto
+        valor_actual = jugador["estadisticas"].get(clave, 0)
+        
+        if re.search("^maximo$", tipo, re.IGNORECASE):
+            if valor_actual > maximo[clave.replace("_", " ")]:
+                maximo[clave.replace("_", " ")] = valor_actual
+                maximo["nombre"] = jugador["nombre"]
+        elif re.search("^minimo$", tipo, re.IGNORECASE):
+            if valor_actual < maximo[clave.replace("_", " ")]:
+                maximo[clave.replace("_", " ")] = valor_actual
+                maximo["nombre"] = jugador["nombre"]
+    
     return maximo
+ 
 
+# Calcular y mostrar el promedio de puntos por partido del equipo excluyendo al jugador con la menor cantidad de puntos por partido.
+def calcular_promedio_total(opcion:bool,dato:str):
+    """ si opcion es true , devuelve el promedio del dato que necesito por parametro sacando al peor en esa estadistica
+    de lo contrario retornara el promedio total"""
+    copia = copy.deepcopy(dream_team)
+    acumulador = 0
+    contador = 0
+    if opcion == True:
+        jugador_a_borrar = mostrar_jugadores_maximos("promedio_puntos_por_partido","minimo")
+        for jugador in copia:
+            if jugador_a_borrar["nombre"] in jugador["nombre"]:
+                copia.remove(jugador)
+                break
+    for jugador in copia:
+        acumulador += jugador["estadisticas"][dato]
+        contador += 1
+    promedio = acumulador / contador
+    return promedio
 
 
 # Permitir al usuario ingresar un valor y mostrar los jugadores que han promediado más puntos por partido que ese valor.
@@ -239,10 +213,7 @@ def mejores_que_el_promedio(clave:str)->list:
                         f"{clave}".replace("_"," ") : jugador["estadisticas"][clave]
                     }
                     jugadores_a_mostrar.append(objeto)
-                else:
-                    return print("el numero ingresado es muy alto")
             return jugadores_a_mostrar
-        
         
 def jugador_con_mas_logros()->dict:
     """retorna un diccionario con el jugador con mas logros obtenidos del dream team"""
@@ -250,76 +221,86 @@ def jugador_con_mas_logros()->dict:
     for jugador in dream_team[1:]:
         if len(jugador["logros"]) > len(maximo["logros"]):
             maximo = jugador
-    return maximo
-
+    logros = {"nombre":maximo["nombre"],"logros":" ,".join(maximo["logros"])}
+    return logros
+ 
 #20
 def mostrar_jugadores_por_posicion():
-    mejores = mejores_que_el_promedio("porcentaje_tiros_de_campo","maximo")
+    mejores = mejores_que_el_promedio("porcentaje_tiros_de_campo")
     for jugador in mejores:
         for jug_ in dream_team:
             if jugador["nombre"] == jug_["nombre"]:
                 jugador["posicion"] = jug_["posicion"]
-    mejores_ordenados = ordenar_objeto(mejores,"posicion")
+    mejores_ordenados = ordenar_objeto(mejores,"posicion","acendente")
     return mejores_ordenados
-
-
 
 def BONUS():
     
-    puntos_sin_ordenar = obtener_estadistica_puntual("puntos_totales")
-    puntos_ordenados = ordenar_objeto(puntos_sin_ordenar,"puntos_totales","decendente")
-    for indice,jugador in enumerate(puntos_ordenados):
-        jugador["ranking puntos"] = f"{indice + 1 }"  
-    
-    asistencias_sin_ordenar = obtener_estadistica_puntual("asistencias_totales")
-    asistencias_ordenados = ordenar_objeto(asistencias_sin_ordenar,"asistencias_totales","decendente")
-    for indice,jugador in enumerate(asistencias_ordenados):
-        jugador["ranking asistencias"] = f"{indice + 1 }" 
-        
-    rebotes_sin_ordenar = obtener_estadistica_puntual("rebotes_totales")
-    rebotes_ordenados = ordenar_objeto(rebotes_sin_ordenar,"rebotes_totales","decendente")
-    for indice,jugador in enumerate(rebotes_ordenados):
-        jugador["ranking rebotes"] = f"{indice + 1 }" 
-        
-    robos_sin_ordenar = obtener_estadistica_puntual("robos_totales")
-    robos_ordenados = ordenar_objeto(robos_sin_ordenar,"robos_totales","decendente")
-    for indice,jugador in enumerate(robos_ordenados):
-        jugador["ranking robos"] =  f"{indice + 1 }"   
-
     jugadores = {}
-
-    for jug in puntos_ordenados:
+    estadisticas = ["puntos_totales","asistencias_totales","rebotes_totales","robos_totales"]
+    for clave in estadisticas:
+        puntos_sin_ordenar = obtener_estadistica_puntual(f"{clave}")
+        puntos_ordenados = ordenar_objeto(puntos_sin_ordenar,f"{clave}","decendente")  
+        for indice,jugador in enumerate(puntos_ordenados):
+            jugador[f"ranking {clave}"] =  f"{indice + 1}"
         
-        jugadores[jug["nombre"]] = { "rank puntos": jug["ranking puntos"]}
+        for jug in puntos_ordenados:
+            if not jug["nombre"] in jugadores:
+                jugadores[jug["nombre"]] = {f"{clave}": jug[f"ranking {clave}"]}
+            else:
+                jugadores[jug["nombre"]][f"{clave}"] = jug[f"ranking {clave}"]
+    
 
-    for jug in asistencias_ordenados:
+    # puntos_sin_ordenar = obtener_estadistica_puntual("puntos_totales")
+    # puntos_ordenados = ordenar_objeto(puntos_sin_ordenar,"puntos_totales","decendente")
+    # for indice,jugador in enumerate(puntos_ordenados):
+    #     jugador["ranking puntos"] = f"{indice + 1 }"  
+    
+    # asistencias_sin_ordenar = obtener_estadistica_puntual("asistencias_totales")
+    # asistencias_ordenados = ordenar_objeto(asistencias_sin_ordenar,"asistencias_totales","decendente")
+    # for indice,jugador in enumerate(asistencias_ordenados):
+    #     jugador["ranking asistencias"] = f"{indice + 1 }" 
+        
+    # rebotes_sin_ordenar = obtener_estadistica_puntual("rebotes_totales")
+    # rebotes_ordenados = ordenar_objeto(rebotes_sin_ordenar,"rebotes_totales","decendente")
+    # for indice,jugador in enumerate(rebotes_ordenados):
+    #     jugador["ranking rebotes"] = f"{indice + 1 }" 
+        
+    # robos_sin_ordenar = obtener_estadistica_puntual("robos_totales")
+    # robos_ordenados = ordenar_objeto(robos_sin_ordenar,"robos_totales","decendente")
+    # for indice,jugador in enumerate(robos_ordenados):
+    #     jugador["ranking robos"] =  f"{indice + 1 }"   
+
+    # jugadores = {}
+
+    # for jug in puntos_ordenados:
+        
+    #     jugadores[jug["nombre"]] = { "rank puntos": jug["ranking puntos"]}
+
+    # for jug in asistencias_ordenados:
    
-        if  jug["nombre"] in jugadores:
-            jugadores[ jug["nombre"]]["rank asistencias"] = jug["ranking asistencias"]
+    #     if  jug["nombre"] in jugadores:
+    #         jugadores[jug["nombre"]]["rank asistencias"] = jug["ranking asistencias"]
 
-    for jug in rebotes_ordenados:
+    # for jug in rebotes_ordenados:
  
-        if  jug["nombre"] in jugadores:
-            jugadores[jug["nombre"]]["rank rebotes"] = jug["ranking rebotes"]
+    #     if  jug["nombre"] in jugadores:
+    #         jugadores[jug["nombre"]]["rank rebotes"] = jug["ranking rebotes"]
 
-    for jug in robos_ordenados:
+    # for jug in robos_ordenados:
  
-        if jug["nombre"] in jugadores:
-            jugadores[jug["nombre"]]["rank robos"] = jug["ranking robos"]
+    #     if jug["nombre"] in jugadores:
+    #         jugadores[jug["nombre"]]["rank robos"] = jug["ranking robos"]
 
     return jugadores
 
-    
-
 def csv_23(jugadores_punto_23):
     nombres = jugadores_punto_23.keys()
-    # Obtener todos los nombres de los rankings
-    rankings = ["nombre", 'rank puntos', 'rank asistencias', 'rank rebotes', 'rank robos']
+    rankings = ["nombre de los jugadores", "puntos_totales","asistencias_totales","rebotes_totales","robos_totales"]
     # Abrir el archivo CSV en modo de escritura
-    with open("app/tabla_rankings.csv", 'w', newline='') as csv_file:
+    with open("app/tabla_rankings.csv", 'w',newline="") as csv_file:
         writer = csv.writer(csv_file, delimiter=".")
-
-        encabezado = [f"    {ranking}   " for ranking in rankings]
+        encabezado = [f"{ranking:>20}" for ranking in rankings]
         writer.writerow(encabezado)
 
         # Escribir las filas con los datos de los jugadores
@@ -328,3 +309,70 @@ def csv_23(jugadores_punto_23):
             for ranking in rankings[1:]:
                 fila.append(f"{jugadores_punto_23[nombre][ranking]:>20}")
             writer.writerow(fila)
+
+#punto 21 Determinar la cantidad de jugadores que hay por cada posición.
+def determinar_cant_posiciones():
+    contadores = {
+        "Base": 0,
+        "Alero": 0,
+        "Escolta": 0,
+        "Ala-Pivot": 0,
+        "Pivot": 0
+    }
+
+    for jugador in dream_team:
+        posicion = jugador["posicion"]
+        if posicion in contadores:
+            contadores[posicion] += 1
+
+    return contadores
+# 22 Mostrar la lista de jugadores ordenadas por la cantidad de All-Star de forma descendente.
+def jugadores_all_star():
+    lista = []
+    for jugador in dream_team:
+        for logro in jugador["logros"]:
+            if re.search("veces All-Star", logro):
+                jugador_formateado = {}
+                jugador_formateado["nombre"] = jugador["nombre"]
+                all_star = re.findall(r'\d+', logro) 
+                jugador_formateado["all star"] = int(all_star[0])  
+                lista.append(jugador_formateado)
+    lista_ordenada = ordenar_objeto(lista,"all star","decendente")
+    return lista_ordenada
+
+#23Determinar qué jugador tiene las mejores estadísticas en cada valor. La salida por pantalla
+def maximo_segun_estadisticas() -> str:
+    estadisticas_claves = dream_team[0]["estadisticas"].keys()
+    mejores_estadisticas = []
+    for clave in estadisticas_claves:
+        jugador = {}
+        max_estadisticas = mostrar_jugadores_maximos(clave,"maximo")
+        jugador["nombre"] = max_estadisticas["nombre"]
+        jugador[f"maximo en {clave}".replace("_"," ")] = max_estadisticas[f"{clave}".replace("_"," ")]
+        mejores_estadisticas.append(jugador)
+    return mejores_estadisticas
+
+
+#24 Determinar qué jugador tiene las mejores estadísticas de todos.
+def encontrar_mejor_jugador_mejor_estadistica(lista_jugadores):
+    """
+    Esta función encuentra al jugador con las mejores estadísticas generales de una lista de jugadores.
+    """
+    if len(lista_jugadores) > 0:
+        max_puntaje = 0
+        max_jugador = None
+
+        for jugador in lista_jugadores:
+            puntaje_total = sum(jugador["estadisticas"].values())
+            if puntaje_total > max_puntaje:
+                max_puntaje = puntaje_total
+                max_jugador = jugador
+
+        if max_jugador:
+            print("El jugador con las mejores estadísticas es {0} con un total de {1} puntos totales.".format(max_jugador["nombre"], round(max_puntaje,2)))
+        else:
+            print("No se encontró ningún jugador en la lista.")
+    else:
+        print("Error, lista vacía!")
+
+encontrar_mejor_jugador_mejor_estadistica(dream_team)

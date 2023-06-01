@@ -1,6 +1,5 @@
 from parcial import *
 import re
-
 def terminar_menu():    
     while True:
         pregunta = input("\n(ingrese un dato valido) desea  volver al menu principal?(no/si): ").lower()
@@ -23,7 +22,7 @@ def dreeam_team_app() -> None:
         7 - Imprimir jugador con el mayor porcentaje de tiros de campo.
         8 - Imprimir jugador con la mayor cantidad de asistencias totales.
         9 - Imprimir jugador con la mayor cantidad de robos totales.
-        10 - Imprimir jugador con la mayor cantidad de bloqueos totales.
+        10 - ingresar un valor y mostrar los jugadores que han promediado más puntos por partido que ese valor.
         11 - Imprimir jugadores con un promedio de puntos por partido superior a un valor dado.
         12 - Imprimir jugadores con un promedio de rebotes por partido superior a un valor dado.
         13 - Imprimir jugadores con un promedio de asistencias por partido superior a un valor dado.
@@ -34,7 +33,11 @@ def dreeam_team_app() -> None:
         18 - Imprimir jugador con la mayor cantidad de temporadas jugadas.
         19 - Imprimir jugadores ordenados por posición con un porcentaje de tiros de campo superior a un valor dado.
         20 - Guardar las estadísticas de un jugador seleccionado en un archivo CSV.
-        23 - imprimir el ranking personal de cada jugador en Puntos Rebotes Asistencias Robos
+        21 - Determinar la cantidad de jugadores que hay por cada posición.
+        22 - Mostrar la lista de jugadores ordenadas por la cantidad de All-Star de forma descendente. 
+        23 - Determinar qué jugador tiene las mejores estadísticas en cada valor
+        24 - Determinar qué jugador tiene las mejores estadísticas de todos
+
         0 - Salir.
 
         _______________________________________________________________
@@ -79,7 +82,7 @@ def dreeam_team_app() -> None:
                 datos = obtener_estadistica_puntual("promedio_puntos_por_partido")
                 datos_ordenados = ordenar_objeto(datos,"nombre","acendente")
                 mostrar_Datos(datos_ordenados)
-                print(f"el promedio total de todos los jugadores es: {promedio}")
+                print(f"el promedio total de todos los jugadores es: {round(promedio,2)}")
                 if terminar_menu():
                     break
             case 5:
@@ -91,7 +94,7 @@ def dreeam_team_app() -> None:
                 # Calcular y mostrar el jugador con la mayor cantidad de rebotes totales.
                 jugador_con_mas_rebotes = mostrar_jugadores_maximos("rebotes_totales","maximo")
                 mostrar_Datos(jugador_con_mas_rebotes)
-                if terminar_menu:
+                if terminar_menu():
                     break
             case 7:
                 jugador_con_mas_porcentaje_tir_campo = mostrar_jugadores_maximos("porcentaje_tiros_de_campo","maximo")
@@ -141,7 +144,7 @@ def dreeam_team_app() -> None:
             case 15:
                 # Calcular y mostrar el promedio de puntos por partido del equipo excluyendo al jugador con la menor cantidad de puntos por partido.
                 promedio_sin_el_peor_jug = calcular_promedio_total(True,"promedio_puntos_por_partido")
-                mostrar_Datos(promedio_sin_el_peor_jug)
+                print(f"el promedio total de puntos  por partidos del dream team sacando al peor jugador en cuanto a tal estadistica es: {round(promedio_sin_el_peor_jug,2)}")
                 if terminar_menu():
                     break
             case 16:
@@ -176,9 +179,27 @@ def dreeam_team_app() -> None:
                 csv_23(jugadores23)
                 if terminar_menu():
                     break
+            case 21: 
+                respuesta = determinar_cant_posiciones()
+                mostrar_Datos(respuesta)
+                if terminar_menu():
+                    break
+            case 22:
+                all_star = jugadores_all_star()
+                mostrar_Datos(all_star)
+                if terminar_menu():
+                    break
+            case 23:
+                mejores_estadisticas = maximo_segun_estadisticas()
+                mostrar_Datos(mejores_estadisticas)
+                if terminar_menu():
+                    break
+            case 24:
+                encontrar_mejor_jugador_mejor_estadistica(dream_team)
+                if terminar_menu():
+                    break
             case 0 :
                 break
             case _:
                 print(f'La opcion {opcion} es incorrecta!', 'error')               
-        
 dreeam_team_app()
